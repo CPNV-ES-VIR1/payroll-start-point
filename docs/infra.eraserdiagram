@@ -1,4 +1,5 @@
 api-end-user-payroll [icon: user]
+api-end-user-sales[icon: user]
 
 DockerEngine [icon: aws-vpc] {
   NETWORK-DMZ{
@@ -9,10 +10,20 @@ DockerEngine [icon: aws-vpc] {
       ms-payroll-database [icon: mysql]
       ms-payroll-volume [icon: database]
   }
+  NETWORK-SALES{
+      ms-customers[icon: express]
+      ms-customers-database[icon: sqlite]
+  }
 }
 
 // relations
 api-end-user-payroll   - ms-api-gateway : "80 : TCP \n/api/vx/employees"
+
+api-end-user-sales   - ms-api-gateway : "80 : TCP \n/api/vx/customers"
+
 ms-api-gateway - ms-payroll-employees : "8080 : TCP"
 ms-payroll-employees - ms-payroll-database : "3306 : TCP"
 ms-payroll-database - ms-payroll-volume
+
+ms-api-gateway - ms-customers : "3000 : TCP"
+ms-customers - ms-customers-database

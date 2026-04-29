@@ -12,6 +12,10 @@ Here is a visual representation of the infrastructure:
 
 ## How to deploy the app
 
+### Get Microservice
+
+* [Customers.zip](https://etml-es-devops.s3.eu-west-1.amazonaws.com/customers.zip)
+
 ### Clone the repository
 
 To set up the project locally, please create a private fork. In other words, do it without using the GitHub interface.
