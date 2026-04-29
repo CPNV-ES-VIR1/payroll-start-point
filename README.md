@@ -12,9 +12,10 @@ Here is a visual representation of the infrastructure:
 
 ## How to deploy the app
 
-### Get Microservice
+### ROADMAP
 
-* [Customers.zip](https://etml-es-devops.s3.eu-west-1.amazonaws.com/customers.zip)
+* Step 01 - Customers
+    * [Get microservice](https://etml-es-devops.s3.eu-west-1.amazonaws.com/customers.zip)
 
 ### Clone the repository
 
