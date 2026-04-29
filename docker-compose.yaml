@@ -32,7 +32,7 @@ services:
   # Employee microservices
   # -----------------------------
   ms-payroll-employees:
-    build: payroll
+    build: microservices/payroll/employees
     container_name: ms-payroll-employees
     depends_on:
       ms-payroll-database:
@@ -55,7 +55,7 @@ services:
   # Nginx API Gateway
   # -----------------------------
   ms-api-gateway:
-    build: ms-api-gateway
+    build: microservices/dmz/api-gateway
     container_name: ms-api-gateway
     ports:
       - "${NGINX_PORT}:80"
