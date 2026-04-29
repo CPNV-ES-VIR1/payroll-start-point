@@ -52,6 +52,22 @@ services:
       start_period: 30s
 
   # -----------------------------
+  # Customers microservice
+  # -----------------------------
+  ms-customers:
+    build:
+      context: microservices/sales/customers
+    container_name: ms-sales-customers
+    networks:
+      - sales
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # -----------------------------
   # Nginx API Gateway
   # -----------------------------
   ms-api-gateway:
@@ -65,6 +81,7 @@ services:
     networks:
       - dmz
       - payroll
+      - sales
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 10s
@@ -75,6 +92,9 @@ networks:
   dmz:
     driver: bridge
   payroll:
+    driver: bridge
+    internal : true
+  sales:
     driver: bridge
     internal : true
 

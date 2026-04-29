@@ -10,12 +10,28 @@ Here is a visual representation of the infrastructure:
 
 ---
 
+
+### BACKLOG
+
+*Step 01 - Customers*
+
+* Update project folder structure
+* [Get microservice](https://etml-es-devops.s3.eu-west-1.amazonaws.com/customers.zip)
+* Update Docker compose and nginx.conf
+* Test the new service
+
+```
+curl -X GET localhost:8080/api/v1/customers
+```
+
+```
+//expected result
+
+```
+
+
 ## How to deploy the app
 
-### ROADMAP
-
-* Step 01 - Customers
-    * [Get microservice](https://etml-es-devops.s3.eu-west-1.amazonaws.com/customers.zip)
 
 ### Clone the repository
 
@@ -29,8 +45,6 @@ origin  https://github.com/CPNV-ES-VIR1/<yourRepo>.git (fetch)
 origin  https://github.com/CPNV-ES-VIR1/<yourRepo>.git (push)
 upstream  https://github.com/CPNV-ES-VIR1/<teacherRepo>.git (fetch)
 upstream  https://github.com/CPNV-ES-VIR1/<teacherRepo>.git (push)
-```
-
 ```
 
 ### Set env variable
