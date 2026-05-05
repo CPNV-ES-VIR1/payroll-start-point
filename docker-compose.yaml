@@ -1,18 +1,22 @@
 services:
 
-  ms-payroll-database:
+  # -----------------------------
+  # DB microservices
+  # -----------------------------
+  ms-payroll-employees-database:
+    &payroll-database
     image: mysql:8.0
-    container_name: ms-payroll-database
+    container_name: ms-payroll-employees-database
     restart: always
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${MYSQL_EMPLOYEES_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ${MYSQL_VOLUME}:/var/lib/mysql
+      - ${MYSQL_EMPLOYEES_VOLUME}:/var/lib/mysql
     networks:
-      - payroll
+      - payroll-employees
     healthcheck:
       test: [
         "CMD",
@@ -28,28 +32,60 @@ services:
       timeout: 5s
       retries: 10
 
+  ms-payroll-departments-database:
+    <<: *payroll-database
+    container_name: ms-payroll-departments-database
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DEPARTMENTS_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${MYSQL_DEPARTMENTS_VOLUME}:/var/lib/mysql
+    networks:
+      - payroll-departments
+
   # -----------------------------
   # Employee microservices
   # -----------------------------
   ms-payroll-employees:
+    &spring-microservice
     build: microservices/payroll/employees
     container_name: ms-payroll-employees
     depends_on:
-      ms-payroll-database:
+      ms-payroll-employees-database:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_URL: ${SPRING_EMPLOYEES_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     networks:
-      - payroll
+      - payroll-employees
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  # -----------------------------
+  # Departments microservices
+  # -----------------------------
+  ms-payroll-departments:
+    <<: *spring-microservice
+    build: microservices/payroll/departments
+    container_name: ms-payroll-departments
+    depends_on:
+      ms-payroll-departments-database:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DEPARTMENTS_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    networks:
+      - payroll-departments
 
   # -----------------------------
   # Customers microservice
@@ -80,7 +116,8 @@ services:
         condition: service_healthy
     networks:
       - dmz
-      - payroll
+      - payroll-employees
+      - payroll-departments
       - sales
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
@@ -91,7 +128,10 @@ services:
 networks:
   dmz:
     driver: bridge
-  payroll:
+  payroll-employees:
+    driver: bridge
+    internal : true
+  payroll-departments:
     driver: bridge
     internal : true
   sales:
@@ -99,4 +139,5 @@ networks:
     internal : true
 
 volumes:
-  mysql-payroll-data:
+  payroll-employees-data:
+  payroll-departments-data:
