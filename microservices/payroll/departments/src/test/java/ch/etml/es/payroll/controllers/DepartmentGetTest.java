@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 class DepartmentGetTest {
 
-    private static final String BASE_URL = "/v1/departments";
+    private static final String BASE_URL = "/api/v1/departments";
 
     @Autowired
     private TestRestTemplate restTemplate;

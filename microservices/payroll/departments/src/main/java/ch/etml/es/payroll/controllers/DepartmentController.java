@@ -10,7 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/departments")
+@RequestMapping("/api/v1/departments")
 public class DepartmentController {
 
     private final DepartmentService service;
@@ -19,20 +19,17 @@ public class DepartmentController {
         this.service = departmentService;
     }
 
-    //TODO curl command
     @GetMapping("")
     public List<Department> all() {
         return service.findAll();
     }
 
-    //TODO curl command
     @GetMapping("/{id}")
     public Department one(@PathVariable Long id) {
         return service.findById(id)
                 .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 
-    //TODO curl command
     @PostMapping("")
     public ResponseEntity<Department> createDepartment(
             @RequestBody Department department) {
@@ -50,9 +47,6 @@ public class DepartmentController {
                 .body(created);
     }
 
-    /* curl sample :
-    curl -i -X DELETE localhost:8080/api/v1/departments/2
-    */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
 

@@ -52,7 +52,7 @@ class DepartmentDeleteTest {
         // WHEN
         ResponseEntity<Void> response =
                 restTemplate.exchange(
-                        "/v1/departments/{id}",
+                        "/api/v1/departments/{id}",
                         HttpMethod.DELETE,
                         null,
                         Void.class,
@@ -76,7 +76,7 @@ class DepartmentDeleteTest {
         // WHEN
         ResponseEntity<String> response =
                 restTemplate.exchange(
-                        "/v1/departments/{id}",
+                        "/api/v1/departments/{id}",
                         HttpMethod.DELETE,
                         null,
                         String.class,
