@@ -6,7 +6,8 @@ DockerEngine [icon: aws-vpc] {
     ms-api-gateway [icon: nginx]
   }
   NETWORK-PAYROLL-EMPLOYEES{
-      ms-payroll-employees[icon: spring]
+      ms-payroll-employees-get[icon: spring]
+      ms-payroll-employees-post[icon: spring]
       ms-payroll-employees-database [icon: mysql]
       ms-payroll-employees-volume [icon: database]
   }
@@ -26,8 +27,10 @@ api-end-user-payroll   - ms-api-gateway : "80 : TCP \n/api/vx/employees  \n\n/ap
 
 api-end-user-sales   - ms-api-gateway : "80 : TCP \n\n/api/vx/customers"
 
-ms-api-gateway - ms-payroll-employees : "8080 : TCP"
-ms-payroll-employees - ms-payroll-employees-database : "3306 : TCP"
+ms-api-gateway - ms-payroll-employees-get : "8080-get : TCP"
+ms-api-gateway - ms-payroll-employees-post : "8080-post : TCP"
+ms-payroll-employees-get - ms-payroll-employees-database : "3306 : TCP"
+ms-payroll-employees-post - ms-payroll-employees-database : "3306 : TCP"
 ms-payroll-employees-database - ms-payroll-employees-volume
 
 ms-api-gateway - ms-payroll-departments : "8080 : TCP"
