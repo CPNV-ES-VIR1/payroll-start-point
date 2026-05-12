@@ -116,6 +116,8 @@ services:
         condition: service_healthy
       ms-customers:
         condition: service_healthy
+      ms-payroll-departments:
+        condition: service_healthy
     networks:
       - dmz
       - payroll-employees
