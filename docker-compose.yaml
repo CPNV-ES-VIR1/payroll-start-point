@@ -114,6 +114,8 @@ services:
     depends_on:
       ms-payroll-employees:
         condition: service_healthy
+      ms-customers:
+        condition: service_healthy
     networks:
       - dmz
       - payroll-employees
